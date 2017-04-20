@@ -274,3 +274,111 @@ def index(request):
 
 ### The Child Template
 - open `index.html` and rewrit to inherit from `base.html`
+- A child template must have an `{% extends %}` tag on the first line to tell Django which parent template to inherit from.
+  - This pulls in everything contained in the `base.html` template and allows `index.html` to define what goes in the space reserved by the `content` block.
+- Everything that we are not inheriting from the parent template goes inside a `content` block.
+  - We indicate that we're finished defining the content by using an `{% endblock content %}` tag.
+- **Note:** In a large project, it’s common to have one parent template called base.html for the entire site and parent templates for each major section of the site. All the section templates inherit from base.html, and each page in the site inherits from a section template. This way you can easily modify the look and feel of the site as a whole, any section in the site, or any individual page. This configuration provides a very efficient way to work, and it encourages you to steadily update your site over time.
+
+## The Topics Page
+### The Topics URL Pattern
+- Create the Topics URL Pattern
+- Open `main_app/urls.py`
+- Add the following URL patter:
+```python
+    url(r'^topics/$', views.topics, name='topics'),
+```
+### The Topics View
+- Open `main_app/views.py`
+- Import the `Topic` method from `.`
+```python
+from . models import Topic
+```
+- Add the following function definition:
+```python
+def topics(request):
+    """"Show all Topics"""
+    topics = Topic.objects.order_by('date_added')
+    context = {'topics': topics}
+    return render(request, 'main_app/topics.html', context)
+```
+### The Topics Template
+- Create the Topics template.
+- Create a new file in `templates/main_app/` as `topics.html`
+- Input the following code:
+```html
+{% extends "main_app/base.html" %}
+
+{% block content %}
+
+<p>Topics</p>
+
+<ul>
+    {% for topic in topics %}
+    <li>{{ topic }}</li>
+    {% empty %}
+    <li>No topics have been added yet.</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
+```
+- Modify the `base.html` to include the anchor tag for the `topics.html` page.
+```html
+    <a href="{% url 'main_app:topics' %}">Topics</a>
+```
+- Also add a `-` after the first anchor link.
+
+## Individual Topic Pages
+### The Topic URL Pattern
+- Create the Topic URL Pattern
+- Open `main_app/urls.py`
+- Add the following URL patter:
+```python
+    url(r'^topics/(?P<topic_id>\d+)/$', views.topic, name='topic'),
+```
+### The Topic View
+- Open `main_app/views.py`
+- Add the following function definition:
+```python
+def topics(request):
+def topic(request, topic_id):
+    """Show a single topic and all its entries."""
+    topic = Topic.objects.get(id=topic_id)
+    entries = topic.entry_set.order_by('-date_added')
+    context = {'topic': topic, 'entries': entries}
+    return render(request, 'main_app/topic.html', context)
+``` 
+### The Topic Template
+- Create the Topic template.
+- Create a new file in `templates/main_app/` as `topic.html`
+- Input the following code:
+```html
+{% extends 'main_app/base.html' %}
+
+{% block content %}
+
+<p>Topic: {{ topic }}</p>
+
+<p>Entries:</p>
+<ul>
+    {% for entry in entries %}
+    <li>
+        <p>{{ entry.date_added|date:'M d, Y H:i' }}</p>
+        <p>{{ entry.text|linebreaks }}</p>
+    </li>
+{% empty %}
+    <li>
+        There are no entries for this topic yet.
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock content %}
+```
+- Modify `topics.html`
+```html
+    <li>
+        <a href="{% url 'main_app:topic' topic.id %}">{{ topic }}</a>
+    </li>   
+```
