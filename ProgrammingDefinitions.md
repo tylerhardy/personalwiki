@@ -359,3 +359,25 @@ An update that decreases the value of a variable.
 Repeated execution of a set of statements using either a recursive function call or a loop
 ## **Infinite Loop**
 A loop in which the termincating condition is never satisfied.
+## **Object**
+Something a variable can refer to.  For now, you can use Object and 'Value' interchangeably.
+## **Sequence**
+An ordered set; that is, a set of values whee each value is identified by an integer index.
+## **Item**
+One of the values in a sequence.
+## **Index**
+An integer value used to select an item in a sequence, such as a character in a string.
+## **Slice**
+A part of a string specified by a range of indices.
+## **Empty String**
+A string with no characters and length of 0, represented by two quotation marks.
+## **Immutable**
+The property of a sequence whose items cannot be assigned.
+## **Traverse**
+To iterate through the items in a sequence, performing a similar operation on each.
+## **Search**
+A pattern of traversal that stops when it finds what it is looking for.
+## **Counter**
+A variable used to count something, usually initialized to zero and then incremented.
+## **Method**
+A function that is associated with an object and called using dot notation.
