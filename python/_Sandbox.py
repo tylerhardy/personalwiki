@@ -1,4 +1,4 @@
-import myCats
-print(myCats.cats)
-print(myCats.cats[0])
-print(myCats.cats[0]['name'])
+x = list(range(1,11))
+print(x)
+a, b, *c, d, e = x
+print(c)

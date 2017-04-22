@@ -381,3 +381,10 @@ A pattern of traversal that stops when it finds what it is looking for.
 A variable used to count something, usually initialized to zero and then incremented.
 ## **Method**
 A function that is associated with an object and called using dot notation.
+## **Invocation**
+A statement that calls a method.
+## **File Object**
+A value that represents an open file.
+## **Problem Recognition**
+A way of solving a problem by expressing it as an instance of a previously-solved problem.
+## **
