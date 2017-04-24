@@ -1,4 +1,4 @@
-# Readin and Writing Files
+# Reading and Writing Files
 ## Files and File Paths
 - A file has two key properties:
   - *filename*
