@@ -163,5 +163,90 @@ BOOTSTRAP3 = {
 ### Styling the `new_topic` Page
 - Modify the `new_topic.html` page with the following:
 ```html new_topic.html
+{% extends "main_app/base.html" %}
+{% load bootstrap3 %}
 
+{% block header %}
+    <h1>Add a new topic:</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <form action="{% url 'main_app:new_topic' %}" method="POST" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <button name="submit" class="btn btn-primary">add topic</button>
+        {% endbuttons %}
+    </form>
+
+{% endblock content %}
 ```
+
+### Styling the `topics` Page
+- Modify the `topics.html` page with the following:
+```html topics.html
+{% extends "main_app/base.html" %}
+
+{% block header %}
+    <h1>Topics</h1>
+{% endblock header %}
+
+{% block content %}
+
+    <p>Topics</p>
+        {% for topic in topics %}
+        <li>
+            <h3>
+                <a href="{% url 'main_app:topic' topic.id %}">{{ topic }}</a>
+            </h3>
+        </li>   
+        {% empty %}
+        <li>No topics have been added yet.</li>
+        {% endfor %}
+    </ul>
+    <h3><a href="{% url 'main_app:new_topic' %}">Add a new topic:</a></h3>
+
+{% endblock content %}
+```
+- We did not need the {% load bootstrap3 %} tag as we are not using any custom bootstrap3 tags.
+
+### Styling the `topic` Page
+- Modify the `topic.html` page with the following:
+```html topic.html
+{% extends 'main_app/base.html' %}
+
+{% block header %}
+    <h2>{{ topic }}</h2>
+{% endblock header %}    
+
+{% block content %}
+
+    <p>
+        <a href="{% url 'main_app:new_entry' topic.id %}">add new entry</a>
+    </p>
+    
+    {% for entry in entries %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>
+                    {{ entry.date_added|date:'M d, Y H:i' }}
+                    <small>
+                        <a href="{% url 'main_app:edit_entry' entry.id %}">edit entry</a>
+                    </small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ entry.text|linebreaks }}
+            </div>
+        </div><!-- panel -->
+    {% empty %}
+        There are no entries for this topic yet.
+    {% endfor %}
+
+{% endblock content %}
+```
+- **NOTE**: If you want to use a different Bootstrap template, follow a similar process to what we’ve done so far in this chapter. Copy the template into base.html, and modify the elements that contain actual content so the template displays your project’s information. Then use Bootstrap’s individual styling tools to style the content on each page.
+
+## Deploying Learning Log
